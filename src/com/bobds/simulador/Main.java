@@ -14,12 +14,21 @@ public class Main {
                 // Leer el body del request
                 String body = new String(exchange.getRequestBody().readAllBytes());
                 String idUnidad = extraerParam(body, "idUnidad");
+                String idOrdenStr = extraerParam(body, "idOrden");
                 String orden = extraerParam(body, "orden");
 
-                System.out.println("Orden recibida → Unidad: " + idUnidad + " | Orden: " + orden);
+                int idOrden = -1;
+                try {
+                    idOrden = Integer.parseInt(idOrdenStr);
+                } catch (NumberFormatException e) {
+                    System.err.println("ID de orden inválido: " + idOrdenStr);
+                }
+
+                System.out.println("Orden recibida → Unidad: " + idUnidad + " | Orden ID: " + idOrden + " | Cmd: " + orden);
 
                 // Procesar en hilo separado para no bloquear el servidor
-                new Thread(() -> robotService.procesarOrden(idUnidad, orden)).start();
+                final int finalIdOrden = idOrden;
+                new Thread(() -> robotService.procesarOrden(idUnidad, finalIdOrden, orden)).start();
 
                 // Responder inmediatamente al backend
                 String respuesta = "Orden recibida";
