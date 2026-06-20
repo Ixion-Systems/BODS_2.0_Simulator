@@ -40,6 +40,31 @@ public class Main {
                 exchange.close();
             }
         });
+        server.createContext("/robot/cancel", exchange -> {
+            if ("POST".equals(exchange.getRequestMethod())) {
+                String body = new String(exchange.getRequestBody().readAllBytes());
+                String idOrdenStr = extraerParam(body, "idOrden");
+
+                int idOrden = -1;
+                try {
+                    idOrden = Integer.parseInt(idOrdenStr);
+                } catch (NumberFormatException e) {
+                    System.err.println("ID de orden inválido: " + idOrdenStr);
+                }
+
+                System.out.println("Solicitud de cancelación recibida -> Orden ID: " + idOrden);
+
+                robotService.cancelOrder(idOrden);
+
+                String respuesta = "Orden cancelada";
+                exchange.sendResponseHeaders(200, respuesta.length());
+                exchange.getResponseBody().write(respuesta.getBytes());
+                exchange.getResponseBody().close();
+            } else {
+                exchange.sendResponseHeaders(405, -1); 
+                exchange.close();
+            }
+        });
 
         server.start();
         System.out.println("Simulador corriendo en puerto 7777...");
