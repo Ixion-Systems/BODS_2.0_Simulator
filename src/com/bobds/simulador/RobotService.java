@@ -19,8 +19,9 @@ public class RobotService {
     private final java.util.Set<Integer> cancelledOrders = ConcurrentHashMap.newKeySet();
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
-    private static final String BACKEND_ORDERS_URL = "http://localhost:8081/api/orders/status";
-    private static final String BACKEND_UNITS_URL = "http://localhost:8081/api/units/status";
+    private static final String BACKEND_BASE_URL = System.getenv("BACKEND_URL") != null ? System.getenv("BACKEND_URL") : "http://localhost:8081";
+    private static final String BACKEND_ORDERS_URL = BACKEND_BASE_URL + "/api/orders/status";
+    private static final String BACKEND_UNITS_URL = BACKEND_BASE_URL + "/api/units/status";
 
     /* recepcion y encolamiento de ordenes */
     public void procesarOrden(String idUnidad, int idOrden, String orden) {
