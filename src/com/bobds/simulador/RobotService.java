@@ -51,8 +51,10 @@ public class RobotService {
                 }
             } catch (InterruptedException e) {
                 System.out.println("Orden " + idOrden + " interrumpida (cancelada).");
+                enviarEstadoAlBackend(idOrden, "Cancelada");
             } catch (Exception e) {
                 System.err.println("Error procesando orden en simulador: " + e.getMessage());
+                enviarEstadoAlBackend(idOrden, "Error");
             } finally {
                 executingThreads.remove(idOrden);
                 cancelledOrders.remove(idOrden);
