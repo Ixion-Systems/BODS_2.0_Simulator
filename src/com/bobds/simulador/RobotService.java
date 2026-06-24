@@ -102,7 +102,7 @@ public class RobotService {
     /* ejecucion simulada de hardware */
     private void ejecutarOrden(String idUnidad, int idOrden, String orden) throws InterruptedException {
         Random rand = new Random();
-        int duracion = 10 + rand.nextInt(11); 
+        int duracion = 30 + rand.nextInt(16); // Entre 30 y 45 segundos
         long inicio = System.currentTimeMillis();
 
         System.out.println(">>> INICIANDO: Unidad " + idUnidad + " Orden ID " + idOrden +
